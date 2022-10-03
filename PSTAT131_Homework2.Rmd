@@ -106,6 +106,20 @@ lm_fit %>%
 
 ### Question 7   
 
+```{r}
+library(yardstick)
+
+# Creating metric set
+abalone_metrics <- metric_set(rmse, rsq, mae)
+abalone_metrics
+
+# Creating tibble of model's predicted values from the training data with actual observed ages
+new_data <- select(abalone_train2, -age)
+abalone_tibble <- predict(lm_fit, new_data)
+abalone_tibble <- bind_cols(abalone_tibble, abalone_train2 %>% 
+                              select(age))
+head(abalone_tibble)
+```
 
 
 
