@@ -33,18 +33,76 @@ The distribution of `age` is right skewed and unimodal. There is a peak in the d
 
 ### Question 2  
 
+```{r}
+# Setting the seed
+set.seed(0124)  
 
-### Question 3  
+# Splitting the data
+abalone_split <- initial_split(abalone2, prop = 0.80, strata = age)
+abalone_train <- training(abalone_split)
+abalone_test <- testing(abalone_split)
+```
 
+### Question 3  HELP
+- take out rings?
+- step_interact()
+- step_center()
+- step_scale()
+
+We should not use `rings` to predict `age` because the `rings` variable would be able to give us the exact age by adding 1.5 to it. There would be no need to predict `age` if we could just directly calculate it using `rings`.  
+
+```{r}
+# Creating a recipe predicting the outcome variable, age
+
+# Creating abalone training set without rings variable
+abalone_train2 <- abalone_train[, !names(abalone_train) %in% c("rings")]
+
+# Creating initial simple recipe (without rings variable)
+simple_abalone_recipe <- recipe(age ~ ., data = abalone_train2)
+
+# Creating the recipe
+abalone_recipe <- recipe(age ~ ., data = abalone_train2) %>%
+  # Dummy coding any categorical predictors
+  step_dummy(all_nominal_predictors())
+abalone_recipe %>%
+  # Creating the interactions
+  step_interact(terms = ~ type:shucked_weight) %>%
+  step_interact(terms = ~ longest_shell:diameter) %>%
+  step_interact(terms = ~ shucked_weight:shell_weight) %>%
+  # Centering all predictors
+  step_center(all_numeric_predictors()) %>%
+  # Scaling all predictors
+  step_scale(all_numeric_predictors())
+```
 
 ### Question 4  
 
+```{r}
+# Creating and storing a linear regression object using lm engine
+lm_model <- linear_reg() %>%
+  set_engine("lm")
+```
 
 ### Question 5  
 
+```{r}
+# Setting up an empty workflow
+lm_workflow <- workflow() %>%
+  # Adding the model
+  add_model(lm_model) %>%
+  # Adding the recipe
+  add_recipe(abalone_recipe)
+```
 
 ### Question 6   
 
+```{r}
+# Fitting the model to the training set
+lm_fit <- fit(lm_workflow, abalone_train2)
+lm_fit %>%
+  extract_fit_parsnip() %>%
+  tidy()
+```
 
 ### Question 7   
 
