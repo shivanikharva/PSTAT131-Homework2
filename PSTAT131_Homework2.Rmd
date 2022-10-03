@@ -114,13 +114,18 @@ abalone_metrics <- metric_set(rmse, rsq, mae)
 abalone_metrics
 
 # Creating tibble of model's predicted values from the training data with actual observed ages
-new_data <- select(abalone_train2, -age)
-abalone_tibble <- predict(lm_fit, new_data)
+abalone_tibble <- predict(lm_fit, new_data = abalone_train2 %>% select(-age))
 abalone_tibble <- bind_cols(abalone_tibble, abalone_train2 %>% 
                               select(age))
 head(abalone_tibble)
+
+# Applying metric set to tibble
+abalone_tibble_metrics <- abalone_metrics(abalone_tibble, truth = age, estimate = .pred)
+abalone_tibble_metrics
 ```
 
+**Results:**  
+The RMSE is about 2.202264, the $R^2$ value is about 0.536678, and the MAE is about 1.588166. An $R^2$ value of 0.536678 means that about 53.67% of the variation in `age` is explained by the predictors.  
 
 
 
