@@ -1,0 +1,58 @@
+---
+title: "PSTAT131 Homework 2"
+author: "Shivani Kharva"
+date: "2022-10-03"
+output: html_document
+---
+
+# Homework 2  
+
+## Linear Regression  
+
+**Reading in the data and loading it in**   
+```{r}
+abalone <- read.csv("abalone.csv")
+library(tidyverse)
+library(tidymodels)
+```
+
+### Question 1  
+
+```{r}
+# Adding age to dataset
+age <- abalone$rings + 1.5
+abalone2 <- cbind(abalone, age)
+
+# Assessing distribution of age
+age_dist <- ggplot(abalone2, aes(age)) +
+  geom_histogram()
+age_dist
+```
+
+The distribution of `age` is right skewed and unimodal. There is a peak in the data at around 11 years old.  
+
+### Question 2  
+
+
+### Question 3  
+
+
+### Question 4  
+
+
+### Question 5  
+
+
+### Question 6   
+
+
+### Question 7   
+
+
+
+
+
+
+
+
+
