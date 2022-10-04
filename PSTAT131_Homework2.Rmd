@@ -104,6 +104,13 @@ lm_fit %>%
   tidy()
 ```
 
+```{r}
+# Predicting the age of the hypothetical female abalone 
+new_sample <- tibble(longest_shell = 0.50, diameter = 0.10, height = 0.30, whole_weight = 4, shucked_weight = 1, viscera_weight = 2, shell_weight = 1, type='F')
+
+predict(lm_fit, new_data = new_sample)
+```
+
 ### Question 7   
 
 ```{r}
