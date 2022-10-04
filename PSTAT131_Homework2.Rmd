@@ -70,9 +70,9 @@ abalone_recipe %>%
   step_interact(terms = ~ longest_shell:diameter) %>%
   step_interact(terms = ~ shucked_weight:shell_weight) %>%
   # Centering all predictors
-  step_center(all_numeric_predictors()) %>%
+  step_center(all_predictors()) %>%
   # Scaling all predictors
-  step_scale(all_numeric_predictors())
+  step_scale(all_predictors())
 ```
 
 ### Question 4  
