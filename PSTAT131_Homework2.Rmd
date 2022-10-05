@@ -20,8 +20,11 @@ library(tidymodels)
 
 ```{r}
 # Adding age to dataset
-age <- abalone$rings + 1.5
-abalone2 <- cbind(abalone, age)
+#age <- abalone$rings + 1.5
+#abalone2 <- cbind(abalone, age)
+
+abalone2 <- abalone %>%
+  mutate(age = rings + 1.5)
 
 # Assessing distribution of age
 age_dist <- ggplot(abalone2, aes(age)) +
@@ -57,18 +60,12 @@ We should not use `rings` to predict `age` because the `rings` variable would be
 # Creating abalone training set without rings variable
 abalone_train2 <- abalone_train[, !names(abalone_train) %in% c("rings")]
 
-# Creating initial simple recipe (without rings variable)
-simple_abalone_recipe <- recipe(age ~ ., data = abalone_train2)
-
 # Creating the recipe
 abalone_recipe <- recipe(age ~ ., data = abalone_train2) %>%
   # Dummy coding any categorical predictors
-  step_dummy(all_nominal_predictors())
-abalone_recipe %>%
+  step_dummy(all_nominal_predictors())  %>%
   # Creating the interactions
-  step_interact(terms = ~ type:shucked_weight) %>%
-  step_interact(terms = ~ longest_shell:diameter) %>%
-  step_interact(terms = ~ shucked_weight:shell_weight) %>%
+  step_interact(terms = ~ starts_with("type"):shucked_weight + longest_shell:diameter + shucked_weight:shell_weight) %>%
   # Centering all predictors
   step_center(all_predictors()) %>%
   # Scaling all predictors
@@ -99,6 +96,8 @@ lm_workflow <- workflow() %>%
 ```{r}
 # Fitting the model to the training set
 lm_fit <- fit(lm_workflow, abalone_train2)
+
+# Visualizing the result  
 lm_fit %>%
   extract_fit_parsnip() %>%
   tidy()
@@ -132,7 +131,7 @@ abalone_tibble_metrics
 ```
 
 **Results:**  
-The RMSE is about 2.202264, the $R^2$ value is about 0.536678, and the MAE is about 1.588166. An $R^2$ value of 0.536678 means that about 53.67% of the variation in `age` is explained by the predictors.  
+The RMSE is about 2.202264, the $R^2$ value is about 0.5547738, and the MAE is about 1.588166. An $R^2$ value of 0.5547738 means that about 55.48% of the variation in `age` is explained by the linear model. An $R^2$ value of 0.5547738 is not very high, so I would say that this model is not a very good model for predicting the age of abalone.   
 
 
 
