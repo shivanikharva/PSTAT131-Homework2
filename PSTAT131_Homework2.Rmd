@@ -47,11 +47,6 @@ abalone_test <- testing(abalone_split)
 ```
 
 ### Question 3  HELP
-- take out rings?
-- step_interact()
-- step_center()
-- step_scale()
-
 We should not use `rings` to predict `age` because the `rings` variable would be able to give us the exact age by adding 1.5 to it. There would be no need to predict `age` if we could just directly calculate it using `rings`.  
 
 ```{r}
@@ -109,6 +104,8 @@ new_sample <- tibble(longest_shell = 0.50, diameter = 0.10, height = 0.30, whole
 
 predict(lm_fit, new_data = new_sample)
 ```
+
+The predicted age is 24.08863 years old.  
 
 ### Question 7   
 
