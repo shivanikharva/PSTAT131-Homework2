@@ -46,7 +46,7 @@ abalone_train <- training(abalone_split)
 abalone_test <- testing(abalone_split)
 ```
 
-### Question 3  HELP
+### Question 3  
 We should not use `rings` to predict `age` because the `rings` variable would be able to give us the exact age by adding 1.5 to it. There would be no need to predict `age` if we could just directly calculate it using `rings`.  
 
 ```{r}
