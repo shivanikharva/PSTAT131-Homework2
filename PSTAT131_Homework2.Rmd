@@ -20,9 +20,6 @@ library(tidymodels)
 
 ```{r}
 # Adding age to dataset
-#age <- abalone$rings + 1.5
-#abalone2 <- cbind(abalone, age)
-
 abalone2 <- abalone %>%
   mutate(age = rings + 1.5)
 
@@ -32,7 +29,7 @@ age_dist <- ggplot(abalone2, aes(age)) +
 age_dist
 ```
 
-The distribution of `age` is right skewed and unimodal. There is a peak in the data at around 11 years old.  
+The distribution of `age` is right skewed and unimodal. There is a peak in the data at around 11 years old. Most of the data lies between ~8 and ~13 years of age.    
 
 ### Question 2  
 
@@ -41,13 +38,13 @@ The distribution of `age` is right skewed and unimodal. There is a peak in the d
 set.seed(0124)  
 
 # Splitting the data
-abalone_split <- initial_split(abalone2, prop = 0.80, strata = age)
+abalone_split <- initial_split(abalone2, prop = 0.70, strata = age)
 abalone_train <- training(abalone_split)
 abalone_test <- testing(abalone_split)
 ```
 
 ### Question 3  
-We should not use `rings` to predict `age` because the `rings` variable would be able to give us the exact age by adding 1.5 to it. There would be no need to predict `age` if we could just directly calculate it using `rings`.  
+We should not use `rings` to predict `age` because the `rings` variable would be able to give us the exact age by adding 1.5 to it. There would be no need to predict `age` if we could just directly calculate it using `rings` (also the purpose of the prediction is to be able to predict the age without cutting open the abalone to find out how many rings it has). So, we should not use `rings` to predict `age`.      
 
 ```{r}
 # Creating a recipe predicting the outcome variable, age
@@ -105,7 +102,7 @@ new_sample <- tibble(longest_shell = 0.50, diameter = 0.10, height = 0.30, whole
 predict(lm_fit, new_data = new_sample)
 ```
 
-The predicted age is 24.08863 years old.  
+The predicted age is 25.39588 years old.  
 
 ### Question 7   
 
@@ -128,7 +125,7 @@ abalone_tibble_metrics
 ```
 
 **Results:**  
-The RMSE is about 2.202264, the $R^2$ value is about 0.5547738, and the MAE is about 1.588166. An $R^2$ value of 0.5547738 means that about 55.48% of the variation in `age` is explained by the linear model. An $R^2$ value of 0.5547738 is not very high, so I would say that this model is not a very good model for predicting the age of abalone.   
+The RMSE is about 2.1423, the $R^2$ value is about 0.5599, and the MAE is about 1.5516. An $R^2$ value of 0.5599 means that about 55.99% of the variation in `age` is explained by the linear model. An $R^2$ value of 0.5599 is not very high, so I would say that this model is not a very good model for predicting the age of abalone.   
 
 
 
